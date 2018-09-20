@@ -1,0 +1,25 @@
+version: '3'
+services:
+
+  project:
+    restart: always
+    build: ./project
+    working_dir: /project
+    volumes:
+    - ./project:/project
+    - ~/.m2:/root/.m2
+    expose:
+    - "8080"
+    depends_on:
+    - nginx
+    command: mvn clean spring-boot:run
+
+  nginx:
+    container_name: v-nginx
+    image: nginx:1.13
+    restart: always
+    ports:
+    - 80:80
+    - 443:443
+    volumes:
+    - ./nginx/conf.d:/etc/nginx/conf.d
